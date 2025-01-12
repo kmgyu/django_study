@@ -1,12 +1,12 @@
 # django study
 
 1. 프로젝트 초기화
-    ```
+    ```bash
     django-admin startproject config .
     ```
     make config settings on current directory
 
-    ```
+    ```bash
     python manage.py runserver
     ```
 
@@ -42,3 +42,59 @@ restful하게 보내려면 JSON으로 serialize해야하나...?
 
 pybo.urls를 통해 각 app별 url을 관리하고, 루트에서 url을 관리하는 형태
 스프링부트도 루트 컨트롤러를 이렇게 만들어야 하나?
+
+3. migrate
+migrations 만들기
+```bash
+python manage.py makemigrations
+```
+모델이 수정되거나 추가되었을 시 해당 명령어를 실행해야 한다.
+
+migrate 하기
+```bash
+python manage.py migrate
+```
+앱의 설정을 적용한다.
+DB가 필요한 앱은 migrate가 필요하다.
+settings.py의 installed_apps에 있는 앱들이 해당된다.
+databases를 이용해 DB 엔진도 설정가능.
+DB 관련 세팅인데... 아마 ORM이랑 DB랑 매칭시킬 때 사용하는 것 아닐까?
+모르니 찾아봐야 겠다.
+
+```bash
+python manage.py sqlmigrate pybo 0001
+```
+해당 명령어를 통해 0001_initial.py의 쿼리 확인 가능.
+쿼리 조회만 되고 실제론 안함.
+
+```bash
+python manage.py shell
+```
+장고 셸 실행 명령어
+파이썬/장고 형식으로 시행되서 django 라이브러리 및 앱을 이용가능한 셸인듯...? 더 알아봐야할 것
+
+Model.objects.get(id=???) 쿼리?를 통해 아이템 조회 가능
+Model.objects.filter(???) 를 통해 1개 이상 조회 가능.
+옵션이 많이 있다는 데 where 문 역할을 하는 듯?
+
+```python
+q.subject = 'Django Model Question'
+# 저장 시(update)
+q.save()
+# 삭제 시
+q.delete()
+```
+
+```python
+a = Answer.objects.get(id=1)
+a.question # question FK 조회 가능
+
+# question에서 answer 조회.
+q.answer_set.all() # PK가 answer의 FK라 다음과 같이 조회가능.
+# 연결모델명_set을 통해 조회 가능 (1:N 관계라 _set 붙임.)
+```
+
+4. superuser
+```bash
+python manage.py createsuperuser
+```
