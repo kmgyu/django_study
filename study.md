@@ -111,9 +111,13 @@ for i in range(300):
 장고 셸을 실행하여 테스트 데이터를 만들어준다.
 그냥 스크립트 파일로 만들어도 무방한가? 공부 필요
 
-6. paginator
+6. 페이지네이션
+paginator
 paging을 위한 기능
-갱장하다
+(갱장하다)
 paginator 내부에도 다양한 속성이 존재한다.
 iterator를 이용한 클래스같다. iterable 한 클래스인건 맞는데 흠...
 
+7. template filter
+게시물 번호 넘버링에 씌였지만, 더 활용할 방법이 있을 것 같다.
+app의 templatetags에 [app]_filter.py 형식으로 만들어준다.(만들고 재시작 필요)
