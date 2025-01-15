@@ -1,8 +1,9 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
-from .models import Question, Answer
-from .views import QuestionForm, AnswerForm
+from .models import Question
+from .forms import QuestionForm, AnswerForm
 from django.http import HttpResponseNotAllowed
+from django.core.paginator import Paginator  
 # Create your views here.
 
 # from django.http import HttpResponse
@@ -17,8 +18,12 @@ def index(request):
     '''
     index pages
     '''
+    page = request.GET.get('page', '1')  # 페이지
     question_list = Question.objects.order_by("-create_date")
-    context = {'question_list': question_list}
+    # question list를 페이지네이터에 집어넣어서 딕셔너리에 집어넣는다. 바로 집어넣는게 아니라!
+    paginator = Paginator(question_list, 10)  # 페이지당 10개씩 보여주기. 여러 속성들이 있다.
+    page_obj = paginator.get_page(page)
+    context = {'question_list': page_obj}
     return render(request, 'pybo/question_list.html', context)
 
 def detail(request, question_id):
