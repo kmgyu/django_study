@@ -2,8 +2,8 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.utils import timezone
 from .models import Question
 from .forms import QuestionForm, AnswerForm
-from django.http import HttpResponseNotAllowed
 from django.core.paginator import Paginator  
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 # from django.http import HttpResponse
@@ -35,6 +35,7 @@ def detail(request, question_id):
     context = {'question': question}
     return render(request, 'pybo/question_detail.html', context)
 
+@login_required(login_url='common:login')
 def answer_create(request, question_id):
     '''
     pybo answer register
@@ -52,21 +53,30 @@ def answer_create(request, question_id):
         form = AnswerForm(request.POST)
         if form.is_valid():
             answer = form.save(commit=False)
+            answer.author = request.user  # author 속성에 로그인 계정 저장
             answer.create_date = timezone.now()
+            answer.modify_date = timezone.now()
             answer.question = question
             answer.save()
             return redirect('pybo:detail', question_id=question.id)
     else:
-        return HttpResponseNotAllowed('Only POST is possible.')
+        # http not allowed를 그냥 공백 form으로 바꿔버렸다.
+        # 야 이러면 request 그냥 받는거잖아.
+        # restful 하게 분리해도 이런식으로 오류 처리 해주긴 하는데
+        # 이렇게 하면 안되는거 아닌가?
+        form = AnswerForm()
     context = {'question': question, 'form': form}
     return render(request, 'pybo/question_detail.html', context)
 
+@login_required(login_url='common:login')
 def question_create(request):
     if request.method == 'POST':
         form = QuestionForm(request.POST) # Auto mapping to Question object
         if form.is_valid():
             question = form.save(commit=False)
+            question.author = request.user  # author 속성에 로그인 계정 저장
             question.create_date = timezone.now()
+            question.modify_date = timezone.now()
             question.save()
             return redirect('pybo:index')
     else:
