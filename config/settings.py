@@ -31,6 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    "common.apps.CommonConfig", # but why the f**king naming convention is F**kingCamelCase? oh it's module lol
     "pybo.apps.PyboConfig", # for migration of pybo app(some models, views, urls, etc.)
     "django.contrib.admin",
     "django.contrib.auth",
@@ -117,7 +118,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 
 STATIC_URL = "static/"
-STATICFILES_DIRS = [
+STATICFILES_DIRS = [ # for static files
     BASE_DIR / 'static',
 ]
 
@@ -125,3 +126,6 @@ STATICFILES_DIRS = [
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+
+# 로그인 성공후 이동하는 URL
+LOGIN_REDIRECT_URL = '/'

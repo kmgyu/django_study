@@ -16,10 +16,13 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from pybo import views
 
 # / 붙일 시, ~/pybo로 이동해도 자동으로 ~/pybo/로 이동.
 # 특별한 경우가 없으면 /를 붙여주는 것이 이롭다.
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("pybo/", include("pybo.urls")),
+    path("common/", include("common.urls")),
+    path("", views.index, name='index')
 ]
